@@ -3,8 +3,7 @@ package com.example.project.response;
 
 import java.util.List;
 
-public class ErrorResponse
-{
+public class ErrorResponse {
     public ErrorResponse(String message, String details) {
         super();
         this.message = message;

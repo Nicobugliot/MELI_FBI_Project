@@ -8,7 +8,7 @@ import java.util.Date;
 @Entity
 @Table(name = "event")
 @EntityListeners(AuditingEntityListener.class)
-public class Event {
+public class Charge {
 
     @Id
     @Column(name = "event_id", nullable = false)
