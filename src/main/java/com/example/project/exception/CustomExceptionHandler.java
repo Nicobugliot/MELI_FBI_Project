@@ -19,8 +19,8 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(InvalidCurrencyException.class)
     public final ResponseEntity handleUserNotFoundException(InvalidCurrencyException ex, WebRequest request) {
         String details = ex.getLocalizedMessage();
-        ErrorResponse error = new ErrorResponse("Record Not Found", details);
-        return new ResponseEntity(error, HttpStatus.NOT_FOUND);
+        ErrorResponse error = new ErrorResponse("Invalid currency", details);
+        return new ResponseEntity(error, HttpStatus.NOT_ACCEPTABLE);
     }
 
 }

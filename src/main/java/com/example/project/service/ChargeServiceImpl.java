@@ -13,30 +13,29 @@ import java.util.List;
 public class ChargeServiceImpl implements ChargeService {
 
     @Autowired
-    private EventRepository repository;
-
+    private EventRepository eventRepository;
 
     @Override
     public List<Charge> listCharges(){
-        return repository.findAll();
+        return eventRepository.findAll();
     }
 
     @Override
     public List<Charge> findChargesByUserId(Long id) {
-        return repository.findByUserId(id);
+        return eventRepository.findByUserId(id);
     }
 
     @Override
     public List<Charge> findChargesByUserIdAndMonth(Long id, Integer month) {
-        return repository.findByUserIdAndMonth(id, month);
+        return eventRepository.findByUserIdAndMonth(id, month);
     }
 
     @Override
     public void saveCharge(Charge charge){
-        if (UtilValidator.validateCurrency(charge)){
-            throw new InvalidCurrencyException("Currency is wrong, the values accepted are USD or AR");
+        if (UtilValidator.validateCurrency(charge.getCurrency())){
+            throw new InvalidCurrencyException("Currency is wrong, the values accepted are 'USD' or 'AR'");
         }
-        repository.save(charge);
+        eventRepository.save(charge);
     }
 
 }

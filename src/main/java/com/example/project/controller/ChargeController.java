@@ -15,22 +15,22 @@ public class ChargeController {
     @Autowired
     private ChargeService chargeService;
 
-    @GetMapping("/events")
+    @GetMapping("/charges")
     public List<Charge> list(){
         return chargeService.listCharges();
     }
 
-    @GetMapping("/events/{user_id}")
+    @GetMapping("/charges/{user_id}")
     public List<Charge> listChargesById(@PathVariable Long user_id){
         return chargeService.findChargesByUserId(user_id);
     }
 
-    @GetMapping("/events/")
-    public List<Charge> listChargesByIdAndMonth(@PathVariable Long user_id, @PathVariable Integer month){
+    @GetMapping("/bills/")
+    public List<Charge> listChargesByIdAndMonth(@RequestParam Long user_id, @RequestParam Integer month){
         return chargeService.findChargesByUserIdAndMonth(user_id, month);
     }
 
-    @PostMapping("/events")
+    @PostMapping("/charges")
     public void insertCharge(@Valid @RequestBody Charge charge){
         chargeService.saveCharge(charge);
     }

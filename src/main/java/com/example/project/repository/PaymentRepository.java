@@ -9,6 +9,5 @@ import java.util.List;
 
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
-    @Query(value = "SELECT * FROM demo.payment WHERE user_id=?1", nativeQuery = true)
     List<Payment> findByUserId(Long id);
 }
