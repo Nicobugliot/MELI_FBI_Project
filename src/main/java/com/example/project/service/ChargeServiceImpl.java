@@ -32,6 +32,11 @@ public class ChargeServiceImpl implements ChargeService {
     }
 
     @Override
+    public Double getTotalCharges(Long id){
+        return chargeRepository.getTotalCharges(id);
+    }
+
+    @Override
     public void saveCharge(Charge charge){
         if (UtilValidator.validateCurrency(charge.getCurrency())){
             throw new InvalidCurrencyException("Currency is wrong, the values accepted are 'USD' or 'AR'");

@@ -1,10 +1,8 @@
 package com.example.project.service;
 
-import com.example.project.controller.ChargeController;
 import com.example.project.exception.InvalidCurrencyException;
 import com.example.project.model.Charge;
 import com.example.project.model.Payment;
-import com.example.project.repository.ChargeRepository;
 import com.example.project.repository.PaymentRepository;
 import com.example.project.response.UserStatusResponse;
 import com.example.project.util.UtilValidator;
@@ -44,7 +42,9 @@ public class PaymentServiceImpl implements PaymentService{
     public UserStatusResponse getUserStatus(Long id, Integer month){
         List<Charge> charges = chargeService.findChargesByUserIdAndMonth(id, month);
         List<Payment> payments = paymentRepository.findByUserId(id);
-        return new UserStatusResponse(charges, payments, 1000);
+        Double totalCharges = chargeService.getTotalCharges(id);
+        Double totalPayments = paymentRepository.getTotalPayments(id);
+        return new UserStatusResponse(charges, payments, totalPayments, totalCharges);
     }
 
 }

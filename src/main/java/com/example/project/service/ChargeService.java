@@ -12,6 +12,8 @@ public interface ChargeService {
 
     List<Charge> findChargesByUserIdAndMonth(Long id, Integer month);
 
+    Double getTotalCharges(Long id);
+
     void saveCharge(Charge charge);
 
 }
