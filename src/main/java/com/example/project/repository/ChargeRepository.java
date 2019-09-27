@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface EventRepository extends JpaRepository<Charge, Long> {
+public interface ChargeRepository extends JpaRepository<Charge, Long> {
 
     List<Charge> findByUserId(Long id);
 

@@ -2,6 +2,7 @@ package com.example.project.controller;
 
 
 import com.example.project.model.Payment;
+import com.example.project.response.UserStatusResponse;
 import com.example.project.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,9 +22,14 @@ public class PaymentController {
         return paymentService.listPayment();
     }
 
-    @GetMapping("payments/{user_id}")
-    public List<Payment> listEventId(@PathVariable Long user_id){
+    @GetMapping("/payments/{user_id}")
+    public List<Payment> listPaymentId(@PathVariable Long user_id){
         return paymentService.findPaymentByUserId(user_id);
+    }
+
+    @GetMapping("/status/")
+    public UserStatusResponse userStatus(@RequestParam Long user_id, @RequestParam Integer month){
+        return paymentService.getUserStatus(user_id, month);
     }
 
     @PostMapping("/payments")

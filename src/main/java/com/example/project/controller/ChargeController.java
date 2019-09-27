@@ -35,16 +35,4 @@ public class ChargeController {
         chargeService.saveCharge(charge);
     }
 
-    /*
-    @PutMapping
-    public Event modify(@RequestBody Event event){
-        return repository.save(event);
-    }
-
-    @DeleteMapping(value = "/{event_id}")
-    public void delete(@PathVariable("event_id") Long id){
-        repository.deleteById(id);
-    }
-     */
-
 }

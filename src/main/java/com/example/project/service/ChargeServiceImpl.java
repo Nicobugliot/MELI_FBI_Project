@@ -1,8 +1,9 @@
 package com.example.project.service;
 
 import com.example.project.exception.InvalidCurrencyException;
+import com.example.project.exception.InvalidEventTypeException;
 import com.example.project.model.Charge;
-import com.example.project.repository.EventRepository;
+import com.example.project.repository.ChargeRepository;
 import com.example.project.util.UtilValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,21 +14,21 @@ import java.util.List;
 public class ChargeServiceImpl implements ChargeService {
 
     @Autowired
-    private EventRepository eventRepository;
+    private ChargeRepository chargeRepository;
 
     @Override
     public List<Charge> listCharges(){
-        return eventRepository.findAll();
+        return chargeRepository.findAll();
     }
 
     @Override
     public List<Charge> findChargesByUserId(Long id) {
-        return eventRepository.findByUserId(id);
+        return chargeRepository.findByUserId(id);
     }
 
     @Override
     public List<Charge> findChargesByUserIdAndMonth(Long id, Integer month) {
-        return eventRepository.findByUserIdAndMonth(id, month);
+        return chargeRepository.findByUserIdAndMonth(id, month);
     }
 
     @Override
@@ -35,7 +36,10 @@ public class ChargeServiceImpl implements ChargeService {
         if (UtilValidator.validateCurrency(charge.getCurrency())){
             throw new InvalidCurrencyException("Currency is wrong, the values accepted are 'USD' or 'AR'");
         }
-        eventRepository.save(charge);
+        if (UtilValidator.validateEventType(charge.getEventType())){
+            throw new InvalidEventTypeException("Event type is wrong");
+        }
+        chargeRepository.save(charge);
     }
 
 }
