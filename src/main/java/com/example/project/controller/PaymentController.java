@@ -2,12 +2,13 @@ package com.example.project.controller;
 
 
 import com.example.project.model.Payment;
-import com.example.project.response.UserStatusResponse;
+import com.example.project.request.PaymentRequest;
 import com.example.project.service.PaymentService;
+import com.example.project.util.UtilValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.util.Calendar;
 import java.util.List;
 
 @RestController
@@ -27,14 +28,33 @@ public class PaymentController {
         return paymentService.findPaymentByUserId(user_id);
     }
 
-    @GetMapping("/status/")
-    public UserStatusResponse userStatus(@RequestParam Long user_id, @RequestParam Integer month){
-        return paymentService.getUserStatus(user_id, month);
-    }
 
     @PostMapping("/payments")
-    public void insert(@Valid @RequestBody Payment payment){
-        paymentService.savePayment(payment);
+    public Payment create(@RequestBody PaymentRequest paymentRequest){
+
+        // Chequeo que los campos sean válidos.
+        try{
+            validateRequest(paymentRequest);
+        } catch (Exception e) {
+            return new Payment();
+        }
+
+        // Chequeo que se pueda guardar en base de datos.
+        try {
+            return paymentService.savePayment(paymentRequest.getUserId(),
+                    paymentRequest.getAmount(),
+                    Calendar.getInstance().get(Calendar.MONTH),
+                    Calendar.getInstance().get(Calendar.YEAR),
+                    paymentRequest.getCurrency());
+
+        } catch(Exception ignored){
+            return new Payment();
+        }
+    }
+
+    private void validateRequest(PaymentRequest paymentRequest) throws Exception {
+        if (UtilValidator.validateCurrency(paymentRequest.getCurrency())) throw new Exception("INVALID CURRENCY");
+        if (paymentRequest.getAmount() < 0) throw new Exception("INVALID AMOUNT");
     }
 
 }

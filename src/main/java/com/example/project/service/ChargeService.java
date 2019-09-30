@@ -16,4 +16,6 @@ public interface ChargeService {
 
     void saveCharge(Charge charge);
 
+    void updateAllCharges(List<Charge> charge);
+
 }

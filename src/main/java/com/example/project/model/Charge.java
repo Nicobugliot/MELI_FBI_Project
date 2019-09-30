@@ -1,6 +1,5 @@
 package com.example.project.model;
 
-import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.util.Date;
@@ -11,7 +10,7 @@ import java.util.Date;
 public class Charge {
 
     @Id
-    @Column(name = "event_id", nullable = false)
+    @Column(name = "event_id", nullable = false, unique = true)
     private Long eventId;
 
     @Column(name = "user_id", nullable = false)
@@ -26,11 +25,31 @@ public class Charge {
     @Column(name = "event_type", nullable = false)
     private String eventType;
 
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date", nullable = false)
     private Date date;
 
+    @Column(name = "debt", columnDefinition = "int default 0" )
+    private Double debt;
+
+    @Column(name = "paid_out", columnDefinition = "float default 0")
+    private Integer paid_out;
+
+
+    public Double getDebt() {
+        return debt;
+    }
+
+    public void setDebt(Double debt) {
+        this.debt = debt;
+    }
+
+    public Integer getPaid_out() {
+        return paid_out;
+    }
+
+    public void setPaid_out(Integer paid_out) {
+        this.paid_out = paid_out;
+    }
 
     public Long getEventId() {
         return eventId;
