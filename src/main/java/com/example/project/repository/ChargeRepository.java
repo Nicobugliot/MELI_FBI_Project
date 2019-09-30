@@ -13,6 +13,6 @@ public interface ChargeRepository extends JpaRepository<Charge, Long> {
     @Query(value = "SELECT * FROM demo.event WHERE user_id=?1 AND MONTH(date)=?2", nativeQuery = true)
     List<Charge> findByUserIdAndMonth(Long id, Integer month);
 
-    @Query(value = "SELECT SUM(amount) FROM demo.event WHERE user_id=?1 GROUP BY user_id", nativeQuery = true)
-    Double getTotalCharges(Long id);
+    @Query(value = "SELECT * FROM demo.event WHERE user_id=?1 AND MONTH(date)=?2 AND YEAR(date)=?3 AND paid_out=0", nativeQuery = true)
+    List<Charge> findByUserIdMonthAndYearNotPaid(Long id, Integer month, Integer year);
 }

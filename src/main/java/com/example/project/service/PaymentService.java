@@ -10,5 +10,5 @@ public interface PaymentService {
 
     List<Payment> findPaymentByUserId(Long id);
 
-    Payment savePayment(Long user_id, java.lang.Double amount, Integer month, Integer year, String currency);
+    void savePayment(Long user_id, java.lang.Double amount, Integer month, Integer year, String currency);
 }

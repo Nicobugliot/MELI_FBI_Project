@@ -30,26 +30,22 @@ public class PaymentController {
 
 
     @PostMapping("/payments")
-    public Payment create(@RequestBody PaymentRequest paymentRequest){
+    public void create(@RequestBody PaymentRequest paymentRequest){
 
         // Chequeo que los campos sean válidos.
         try{
             validateRequest(paymentRequest);
         } catch (Exception e) {
-            return new Payment();
+            e.printStackTrace();
         }
 
-        // Chequeo que se pueda guardar en base de datos.
-        try {
-            return paymentService.savePayment(paymentRequest.getUserId(),
-                    paymentRequest.getAmount(),
-                    Calendar.getInstance().get(Calendar.MONTH),
-                    Calendar.getInstance().get(Calendar.YEAR),
-                    paymentRequest.getCurrency());
+        paymentService.savePayment(paymentRequest.getUserId(),
+                                   paymentRequest.getAmount(),
+                                   Calendar.getInstance().get(Calendar.MONTH),
+                                   Calendar.getInstance().get(Calendar.YEAR),
+                                   paymentRequest.getCurrency());
 
-        } catch(Exception ignored){
-            return new Payment();
-        }
+
     }
 
     private void validateRequest(PaymentRequest paymentRequest) throws Exception {

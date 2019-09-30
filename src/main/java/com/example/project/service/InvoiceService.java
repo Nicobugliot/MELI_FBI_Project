@@ -10,5 +10,5 @@ public interface InvoiceService {
 
     void addPaymentToInvoice(Invoice invoice, Double payment);
 
-    void saveInvoice(Invoice invoice);
+    Invoice saveInvoice(Invoice invoice);
 }

@@ -30,10 +30,6 @@ public class ChargeController {
         return chargeService.findChargesByUserIdAndMonth(user_id, month);
     }
 
-    @GetMapping("/total_charges/{user_id}")
-    public Double getTotalCharges(@PathVariable Long user_id){
-        return chargeService.getTotalCharges(user_id);
-    }
 
     @PostMapping("/charges")
     public void insertCharge(@Valid @RequestBody Charge charge){

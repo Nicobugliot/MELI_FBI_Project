@@ -12,7 +12,7 @@ public interface ChargeService {
 
     List<Charge> findChargesByUserIdAndMonth(Long id, Integer month);
 
-    Double getTotalCharges(Long id);
+    List<Charge> findChargesByUserIdMonthAndYearNotPaid(Long id, Integer month, Integer year);
 
     void saveCharge(Charge charge);
 

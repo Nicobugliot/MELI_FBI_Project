@@ -28,11 +28,14 @@ public class Charge {
     @Column(name = "date", nullable = false)
     private Date date;
 
-    @Column(name = "debt", columnDefinition = "int default 0" )
+    @Column(name = "debt")
     private Double debt;
 
-    @Column(name = "paid_out", columnDefinition = "float default 0")
+    @Column(name = "paid_out")
     private Integer paid_out;
+
+    @Column(name = "invoice_id")
+    private Long invoiceId;
 
 
     public Double getDebt() {
@@ -97,5 +100,13 @@ public class Charge {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Long getInvoiceId() {
+        return invoiceId;
+    }
+
+    public void setInvoiceId(Long invoiceId) {
+        this.invoiceId = invoiceId;
     }
 }

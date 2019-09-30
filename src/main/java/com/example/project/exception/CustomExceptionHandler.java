@@ -20,14 +20,14 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     public final ResponseEntity handleUserNotFoundException(InvalidCurrencyException ex, WebRequest request) {
         String details = ex.getLocalizedMessage();
         ErrorResponse error = new ErrorResponse("Invalid currency", details);
-        return new ResponseEntity(error, HttpStatus.NOT_ACCEPTABLE);
+        return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(InvalidEventTypeException.class)
     public final ResponseEntity handleUserNotFoundException(InvalidEventTypeException ex, WebRequest request) {
         String details = ex.getLocalizedMessage();
         ErrorResponse error = new ErrorResponse("Invalid event type", details);
-        return new ResponseEntity(error, HttpStatus.NOT_ACCEPTABLE);
+        return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
     }
 
 }

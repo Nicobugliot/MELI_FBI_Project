@@ -37,9 +37,10 @@ public class ChargeServiceImpl implements ChargeService {
     }
 
     @Override
-    public Double getTotalCharges(Long id){
-        return chargeRepository.getTotalCharges(id);
+    public List<Charge> findChargesByUserIdMonthAndYearNotPaid(Long id, Integer month, Integer year) {
+        return chargeRepository.findByUserIdMonthAndYearNotPaid(id, month, year);
     }
+
 
     @Override
     public void saveCharge(Charge charge){
@@ -50,12 +51,14 @@ public class ChargeServiceImpl implements ChargeService {
             throw new InvalidEventTypeException("Event type is wrong");
         }
 
+        // Me fijo si hay una factura de ese mes si no la creo.
+        Invoice invoice = createOrUpdateInvoice(charge);
+
         // Inicializo los valores.
         charge.setDebt(charge.getAmount());
         charge.setPaid_out(0);
+        charge.setInvoiceId(invoice.getId());
         chargeRepository.save(charge);
-
-        createOrUpdateInvoice(charge);
 
     }
 
@@ -79,7 +82,7 @@ public class ChargeServiceImpl implements ChargeService {
     }
 
     // Me fijo que la factura exista, si no, la creo
-    private void createOrUpdateInvoice(Charge charge){
+    private Invoice createOrUpdateInvoice(Charge charge){
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(charge.getDate());
@@ -91,12 +94,12 @@ public class ChargeServiceImpl implements ChargeService {
             userInvoice.setDebt( userInvoice.getDebt() + charge.getAmount() );
 
             // Actualizo la fila
-            invoiceService.saveInvoice(userInvoice);
+            return invoiceService.saveInvoice(userInvoice);
         }catch (NullPointerException e){
 
             // Si no existe la factura entonces la creo
             Invoice invoice = setNewUserInvoice(charge, month, year);
-            invoiceService.saveInvoice(invoice);
+            return invoiceService.saveInvoice(invoice);
         }
     }
 

@@ -11,6 +11,4 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
     List<Payment> findByUserId(Long id);
 
-    @Query(value = "SELECT SUM(amount) FROM demo.payment WHERE user_id=?1 GROUP BY user_id", nativeQuery = true)
-    Double getTotalPayments(Long id);
 }

@@ -1,5 +1,7 @@
 package com.example.project.service;
 
+import com.example.project.exception.InvalidCurrencyException;
+import com.example.project.exception.InvalidEventTypeException;
 import com.example.project.model.Charge;
 import com.example.project.model.Invoice;
 import com.example.project.model.Payment;
@@ -35,11 +37,17 @@ public class PaymentServiceImpl implements PaymentService{
     }
 
     @Override
-    public Payment savePayment(Long user_id, Double amount, Integer month, Integer year, String currency){
+    public void savePayment(Long user_id, Double amount, Integer month, Integer year, String currency){
 
         Invoice invoice = invoiceService.getUserInvoiceByMonthAndYear(user_id, month + 1, year);
 
-        //validatePaymentAmount(amount, invoice);
+        if (invoice == null){
+            throw new InvalidEventTypeException("No existen cargos para este usuario");
+        }
+
+        if (validatePaymentAmount(amount, invoice)){
+            throw new InvalidEventTypeException("Estas intentando pagar más de lo que te corresponde");
+        }
 
         Payment payment = new Payment();
         payment.setAmount(amount);
@@ -53,12 +61,10 @@ public class PaymentServiceImpl implements PaymentService{
             invoiceService.addPaymentToInvoice(invoice, amount);
         }catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Tiro error");
         }
 
         associatePaymentAsync(user_id, amount, month + 1, year, userPayment.getId());
 
-        return payment;
     }
 
     private Boolean validatePaymentAmount(Double amount, Invoice invoice) {
@@ -66,7 +72,7 @@ public class PaymentServiceImpl implements PaymentService{
     }
 
     private void associatePaymentAsync(Long user_id, Double amount, Integer month, Integer year, Long id){
-        List<Charge> userCharges = chargeService.findChargesByUserIdAndMonth(user_id, month);
+        List<Charge> userCharges = chargeService.findChargesByUserIdMonthAndYearNotPaid(user_id, month, year);
 
         // Actualizo los cargos
         updateChargeAndAssociate(userCharges, amount, id);
@@ -75,17 +81,20 @@ public class PaymentServiceImpl implements PaymentService{
     private void updateChargeAndAssociate(List<Charge> userCharges, Double amount, Long paymentId){
         for (Charge charge: userCharges) {
             amount -= charge.getDebt();
-            if (amount <= 0) {
-                charge.setDebt( Math.abs(amount) );
-                associationTableService.saveAssociation(charge.getEventId(), paymentId);
-                break;
-            }
-            else{
+
+            associationTableService.saveAssociation(charge.getEventId(), paymentId);
+
+            if (amount >= 0) {
                 charge.setDebt(0.00);
                 charge.setPaid_out(1);
-                associationTableService.saveAssociation(charge.getEventId(), paymentId);
+                charge.setDebt( Math.abs(amount) );
+            }
+            else{
+                charge.setDebt( Math.abs(amount) );
+                break;
             }
         }
+        // Le hago un update a todos los cargos afectados.
         chargeService.updateAllCharges(userCharges);
     }
 
