@@ -50,10 +50,9 @@ public class PaymentServiceImpl implements PaymentService{
             throw new InvalidEventTypeException("Estas intentando pagar más de lo que te corresponde");
         }
 
-        Payment payment = new Payment();
-        payment.setAmount(amount);
-        payment.setUserId(user_id);
-        payment.setCurrency(currency);
+        // Seteo el pago
+        Payment payment = buildPayment(user_id, amount, currency);
+
 
         // Guardo el pago
         Payment userPayment = paymentRepository.save(payment);
@@ -64,7 +63,7 @@ public class PaymentServiceImpl implements PaymentService{
             e.printStackTrace();
         }
 
-        associatePaymentAsync(user_id, amount, month + 1, year, userPayment.getId());
+        associatePaymentAsync(userPayment);
 
     }
 
@@ -72,11 +71,20 @@ public class PaymentServiceImpl implements PaymentService{
         return ((invoice.getDebt() - amount) < 0);
     }
 
-    private void associatePaymentAsync(Long user_id, Double amount, Integer month, Integer year, Long id){
+    private void associatePaymentAsync(Payment payment){
 
         new Thread(() -> {
-            asociatePaymentService.associate(user_id, amount, month, year, id);
+            asociatePaymentService.associate(payment);
         }).start();
+    }
+
+    private Payment buildPayment(Long user_id, Double amount, String currency){
+        Payment payment = new Payment();
+        payment.setAmount(amount);
+        payment.setUserId(user_id);
+        payment.setCurrency(currency);
+
+        return payment;
     }
 
 }

@@ -4,15 +4,15 @@ import java.util.Date;
 
 public class ChargeRequest {
     private Long id;
-    private Long event_id;
+    private Long eventId;
     private Double amount;
     private String currency;
     private Date date;
     private Double debt;
-    private String event_type;
+    private String eventType;
     private Integer paid_out;
-    private Long user_id;
-    private Long invoice_id;
+    private Long userId;
+    private Long invoiceId;
 
     public Long getId() {
         return id;
@@ -20,14 +20,6 @@ public class ChargeRequest {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getEvent_id() {
-        return event_id;
-    }
-
-    public void setEvent_id(Long event_id) {
-        this.event_id = event_id;
     }
 
     public Double getAmount() {
@@ -62,13 +54,6 @@ public class ChargeRequest {
         this.debt = debt;
     }
 
-    public String getEvent_type() {
-        return event_type;
-    }
-
-    public void setEvent_type(String event_type) {
-        this.event_type = event_type;
-    }
 
     public Integer getPaid_out() {
         return paid_out;
@@ -78,19 +63,35 @@ public class ChargeRequest {
         this.paid_out = paid_out;
     }
 
-    public Long getUser_id() {
-        return user_id;
+    public String getEventType() {
+        return eventType;
     }
 
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
+    public void setEventType(String eventType) {
+        this.eventType = eventType;
     }
 
-    public Long getInvoice_id() {
-        return invoice_id;
+    public Long getEventId() {
+        return eventId;
     }
 
-    public void setInvoice_id(Long invoice_id) {
-        this.invoice_id = invoice_id;
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public Long getInvoiceId() {
+        return invoiceId;
+    }
+
+    public void setInvoiceId(Long invoiceId) {
+        this.invoiceId = invoiceId;
     }
 }

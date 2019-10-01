@@ -41,6 +41,11 @@ public class ChargeServiceImpl implements ChargeService {
         return chargeRepository.findByUserIdMonthAndYearNotPaid(id, month, year);
     }
 
+    @Override
+    public List<Charge> findChargesByUserIdNotPaid(Long user_id){
+        return chargeRepository.findChargesByUserIdNotPaid(user_id);
+    }
+
 
     @Override
     public void saveCharge(Charge charge){

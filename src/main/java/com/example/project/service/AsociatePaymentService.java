@@ -1,8 +1,13 @@
 package com.example.project.service;
 
 import com.example.project.model.Charge;
+import com.example.project.model.Payment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -14,19 +19,27 @@ public class AsociatePaymentService {
     @Autowired
     AssociationTableService associationTableService;
 
-    void associate(Long user_id, Double amount, Integer month, Integer year, Long id){
+    void associate(Payment payment){
+        Date date = payment.getDate();
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-        List<Charge> userCharges = chargeService.findChargesByUserIdMonthAndYearNotPaid(user_id,
+        Integer month = localDate.getMonthValue();
+        Integer year = localDate.getYear();
+
+        List<Charge> userCharges = chargeService.findChargesByUserIdMonthAndYearNotPaid(payment.getUserId(),
                 month,
                 year);
 
         // Actualizo los cargos
-        updateChargeAndAssociate(userCharges, amount, id);
+        updateChargeAndAssociate(userCharges, payment);
 
     }
 
-    private void updateChargeAndAssociate(List<Charge> userCharges, Double amount, Long paymentId){
-        
+    private void updateChargeAndAssociate(List<Charge> userCharges, Payment payment){
+        // Acá le tendría que sumar al monto lo que tiene de sobra el usuario.
+        Double amount = payment.getAmount();
+        Long paymentId = payment.getId();
+
         for (Charge charge: userCharges) {
             amount -= charge.getDebt();
 
@@ -41,8 +54,10 @@ public class AsociatePaymentService {
                 break;
             }
         }
+
+        // Agrego plata a favor del usuario si el monto es mayor a 0.
+
         // Le hago un update a todos los cargos afectados.
         chargeService.updateAllCharges(userCharges);
     }
-
 }

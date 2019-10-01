@@ -25,11 +25,15 @@ public class ChargeController {
     public List<Charge> listChargesById(@PathVariable Long user_id){
         return chargeService.findChargesByUserId(user_id);
     }
-
-
+    
     @GetMapping("/bills/")
     public List<Charge> listChargesByIdMonthAndYear(@RequestParam Long user_id, @RequestParam Integer month, @RequestParam Integer year){
         return chargeService.findChargesByUserIdMonthAndYear(user_id, month, year);
+    }
+
+    @GetMapping("/debt/{user_id}")
+    public List<Charge> listChargeNotPaidByUser(@PathVariable Long user_id){
+        return chargeService.findChargesByUserIdNotPaid(user_id);
     }
 
 
@@ -43,13 +47,14 @@ public class ChargeController {
 
         charge.setDebt(chargeRequest.getDebt());
         charge.setPaid_out(chargeRequest.getPaid_out());
-        charge.setInvoiceId(chargeRequest.getInvoice_id());
-        charge.setEventType(chargeRequest.getEvent_type());
-        charge.setEventId(chargeRequest.getEvent_id());
+        charge.setInvoiceId(chargeRequest.getInvoiceId());
+        charge.setEventType(chargeRequest.getEventType());
+        charge.setEventId(chargeRequest.getEventId());
         charge.setCurrency(chargeRequest.getCurrency());
         charge.setAmount(chargeRequest.getAmount());
-        charge.setUserId(chargeRequest.getUser_id());
+        charge.setUserId(chargeRequest.getUserId());
         charge.setDate(chargeRequest.getDate());
+
         return charge;
     }
 

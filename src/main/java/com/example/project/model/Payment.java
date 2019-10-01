@@ -1,8 +1,11 @@
 package com.example.project.model;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "payment")
@@ -22,6 +25,18 @@ public class Payment {
     @Column(name = "currency", nullable = false)
     private String currency;
 
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "date")
+    private Date date;
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     public Long getId() {
         return id;
