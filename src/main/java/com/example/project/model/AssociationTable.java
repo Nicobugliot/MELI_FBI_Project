@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class AssociationTable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
     @Column(name = "charge_id")

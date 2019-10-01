@@ -6,27 +6,23 @@ import com.example.project.model.Payment;
 import java.util.List;
 
 public class UserStatusResponse {
-    public UserStatusResponse(List<Charge> charges, List<Payment> payments, java.lang.Double totalPayments, java.lang.Double totalCharges) {
+    public UserStatusResponse(List<Charge> charges, List<Payment> payments, Double debt) {
         super();
         this.charges = charges;
         this.payments = payments;
-        this.totalPayments = totalPayments;
-        this.totalCharges = totalCharges;
-        this.debt = totalCharges - totalPayments;
+        this.debt = debt;
     }
 
 
     private List<Charge> charges;
     private List<Payment> payments;
-    private java.lang.Double totalPayments;
-    private java.lang.Double totalCharges;
-    private java.lang.Double debt;
+    private Double debt;
 
-    public java.lang.Double getDebt() {
+    public Double getDebt() {
         return debt;
     }
 
-    public void setDebt(java.lang.Double debt) {
+    public void setDebt(Double debt) {
         this.debt = debt;
     }
 
@@ -46,19 +42,4 @@ public class UserStatusResponse {
         this.payments = payments;
     }
 
-    public java.lang.Double getTotalPayments() {
-        return totalPayments;
-    }
-
-    public void setTotalPayments(java.lang.Double totalPayments) {
-        this.totalPayments = totalPayments;
-    }
-
-    public java.lang.Double getTotalCharges() {
-        return totalCharges;
-    }
-
-    public void setTotalCharges(java.lang.Double totalCharges) {
-        this.totalCharges = totalCharges;
-    }
 }

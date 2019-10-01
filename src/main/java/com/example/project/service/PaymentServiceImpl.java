@@ -1,8 +1,6 @@
 package com.example.project.service;
 
-import com.example.project.exception.InvalidCurrencyException;
 import com.example.project.exception.InvalidEventTypeException;
-import com.example.project.model.Charge;
 import com.example.project.model.Invoice;
 import com.example.project.model.Payment;
 import com.example.project.repository.PaymentRepository;
@@ -13,6 +11,9 @@ import java.util.List;
 
 @Service
 public class PaymentServiceImpl implements PaymentService{
+
+    @Autowired
+    private AsociatePaymentService asociatePaymentService;
 
     @Autowired
     private PaymentRepository paymentRepository;
@@ -72,30 +73,10 @@ public class PaymentServiceImpl implements PaymentService{
     }
 
     private void associatePaymentAsync(Long user_id, Double amount, Integer month, Integer year, Long id){
-        List<Charge> userCharges = chargeService.findChargesByUserIdMonthAndYearNotPaid(user_id, month, year);
 
-        // Actualizo los cargos
-        updateChargeAndAssociate(userCharges, amount, id);
-    }
-
-    private void updateChargeAndAssociate(List<Charge> userCharges, Double amount, Long paymentId){
-        for (Charge charge: userCharges) {
-            amount -= charge.getDebt();
-
-            associationTableService.saveAssociation(charge.getEventId(), paymentId);
-
-            if (amount >= 0) {
-                charge.setDebt(0.00);
-                charge.setPaid_out(1);
-                charge.setDebt( Math.abs(amount) );
-            }
-            else{
-                charge.setDebt( Math.abs(amount) );
-                break;
-            }
-        }
-        // Le hago un update a todos los cargos afectados.
-        chargeService.updateAllCharges(userCharges);
+        new Thread(() -> {
+            asociatePaymentService.associate(user_id, amount, month, year, id);
+        }).start();
     }
 
 }

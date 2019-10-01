@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class Payment {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
     @Column(name = "user_id", nullable = false)
@@ -21,6 +21,7 @@ public class Payment {
 
     @Column(name = "currency", nullable = false)
     private String currency;
+
 
     public Long getId() {
         return id;

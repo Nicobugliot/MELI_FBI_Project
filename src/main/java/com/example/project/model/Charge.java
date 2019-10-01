@@ -10,6 +10,9 @@ import java.util.Date;
 public class Charge {
 
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Long id;
+
     @Column(name = "event_id", nullable = false, unique = true)
     private Long eventId;
 

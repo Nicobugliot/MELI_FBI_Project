@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class Invoice {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
     @Column(name = "user_id")

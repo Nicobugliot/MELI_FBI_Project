@@ -32,8 +32,8 @@ public class ChargeServiceImpl implements ChargeService {
     }
 
     @Override
-    public List<Charge> findChargesByUserIdAndMonth(Long id, Integer month) {
-        return chargeRepository.findByUserIdAndMonth(id, month);
+    public List<Charge> findChargesByUserIdMonthAndYear(Long id, Integer month, Integer year) {
+        return chargeRepository.findByUserIdMonthAndYear(id, month);
     }
 
     @Override
@@ -51,6 +51,7 @@ public class ChargeServiceImpl implements ChargeService {
             throw new InvalidEventTypeException("Event type is wrong");
         }
 
+        // Arreglar bug de que si agrego un charge con un event_id que ya existe me la suma a la factura.
         // Me fijo si hay una factura de ese mes si no la creo.
         Invoice invoice = createOrUpdateInvoice(charge);
 

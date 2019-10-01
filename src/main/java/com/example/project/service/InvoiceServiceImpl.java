@@ -1,16 +1,40 @@
 package com.example.project.service;
 
+import com.example.project.model.Charge;
 import com.example.project.model.Invoice;
 import com.example.project.model.Payment;
 import com.example.project.repository.InvoiceRepository;
+import com.example.project.response.UserStatusResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class InvoiceServiceImpl implements InvoiceService{
 
     @Autowired
     private InvoiceRepository invoiceRepository;
+
+    @Autowired
+    private ChargeService chargeService;
+
+    @Autowired
+    private PaymentService paymentService;
+
+    @Override
+    public List<Invoice> listInvoice(){
+        return invoiceRepository.findAll();
+    }
+
+    /*
+    @Override
+    public UserStatusResponse getUserStatus(Long user_id, Integer month, Integer year) {
+        chargeService.findChargesByUserIdMonthAndYear(user_id, month, year);
+        // Implementar el estado del usuario ( cargos, pagos y deuda )
+    }
+
+     */
 
     @Override
     public Invoice getUserInvoiceByMonthAndYear(Long user_id, Integer month, Integer year){
@@ -27,8 +51,5 @@ public class InvoiceServiceImpl implements InvoiceService{
     public Invoice saveInvoice(Invoice invoice){
         return invoiceRepository.save(invoice);
     }
-
-
-
 
 }
