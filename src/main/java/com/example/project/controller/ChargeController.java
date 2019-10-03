@@ -25,7 +25,7 @@ public class ChargeController {
     public List<Charge> listChargesById(@PathVariable Long user_id){
         return chargeService.findChargesByUserId(user_id);
     }
-    
+
     @GetMapping("/bills/")
     public List<Charge> listChargesByIdMonthAndYear(@RequestParam Long user_id, @RequestParam Integer month, @RequestParam Integer year){
         return chargeService.findChargesByUserIdMonthAndYear(user_id, month, year);
@@ -36,10 +36,10 @@ public class ChargeController {
         return chargeService.findChargesByUserIdNotPaid(user_id);
     }
 
-
     @PostMapping("/charges")
     public void insertCharge(@Valid @RequestBody ChargeRequest chargeRequest){ //Charge eventRequestBody){
-        chargeService.saveCharge(buildCharge(chargeRequest));
+        Charge charge = buildCharge(chargeRequest);
+        chargeService.saveCharge(charge);
     }
 
     private Charge buildCharge(ChargeRequest chargeRequest){

@@ -38,6 +38,11 @@ public class PaymentServiceImpl implements PaymentService{
     }
 
     @Override
+    public List<Payment> findPaymentByUserMonthAndYear(Long id, Integer month, Integer year){
+        return paymentRepository.findPaymentByUserMonthAndYear(id, month, year);
+    }
+
+    @Override
     public void savePayment(Long user_id, Double amount, Integer month, Integer year, String currency){
 
         Invoice invoice = invoiceService.getUserInvoiceByMonthAndYear(user_id, month + 1, year);

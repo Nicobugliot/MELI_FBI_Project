@@ -27,14 +27,18 @@ public class InvoiceServiceImpl implements InvoiceService{
         return invoiceRepository.findAll();
     }
 
-    /*
+
     @Override
     public UserStatusResponse getUserStatus(Long user_id, Integer month, Integer year) {
-        chargeService.findChargesByUserIdMonthAndYear(user_id, month, year);
+        System.out.println("ASD");
+        List<Charge> userCharge = chargeService.findChargesByUserIdMonthAndYear(user_id, month, year);
+        List<Payment> userPayment = paymentService.findPaymentByUserMonthAndYear(user_id, month, year);
+        Invoice userInvoice = invoiceRepository.userInvoiceByMonthAndYear(user_id, month, year);
+
+        return new UserStatusResponse(userCharge, userPayment, userInvoice.getDebt());
+
         // Implementar el estado del usuario ( cargos, pagos y deuda )
     }
-
-     */
 
     @Override
     public Invoice getUserInvoiceByMonthAndYear(Long user_id, Integer month, Integer year){

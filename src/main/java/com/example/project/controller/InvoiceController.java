@@ -19,14 +19,12 @@ public class InvoiceController {
     public Invoice getUserInvoiceByMonthAndYear(@RequestParam Long user_id, @RequestParam Integer month, @RequestParam Integer year) {
         return invoiceService.getUserInvoiceByMonthAndYear(user_id, month, year);
     }
-    /*
-    @GetMapping("/status/{user_id}")
+
+    @GetMapping("/status/")
     public UserStatusResponse getUserStatus(@RequestParam Long user_id, @RequestParam Integer month, @RequestParam Integer year){
         return invoiceService.getUserStatus(user_id, month, year);
     }
 
-
-     */
     @GetMapping("/invoice")
     public List<Invoice> getInvoice() {
         return invoiceService.listInvoice();

@@ -33,7 +33,7 @@ public class ChargeServiceImpl implements ChargeService {
 
     @Override
     public List<Charge> findChargesByUserIdMonthAndYear(Long id, Integer month, Integer year) {
-        return chargeRepository.findByUserIdMonthAndYear(id, month);
+        return chargeRepository.findByUserIdMonthAndYear(id, month, year);
     }
 
     @Override
