@@ -1,5 +1,6 @@
 package com.example.project.service;
 
+import com.example.project.exception.InvalidAmountException;
 import com.example.project.exception.InvalidCurrencyException;
 import com.example.project.exception.InvalidEventTypeException;
 import com.example.project.model.Charge;
@@ -9,11 +10,15 @@ import com.example.project.util.UtilValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Service
 public class ChargeServiceImpl implements ChargeService {
+
+    private final Logger log = Logger.getLogger(this.getClass().getName());
 
     @Autowired
     private ChargeRepository chargeRepository;
@@ -48,23 +53,29 @@ public class ChargeServiceImpl implements ChargeService {
 
 
     @Override
+    @Transactional
     public void saveCharge(Charge charge){
-        if (UtilValidator.validateCurrency(charge.getCurrency())){
-            throw new InvalidCurrencyException("Currency is wrong, the values accepted are 'USD' or 'AR'");
-        }
-        if (UtilValidator.validateEventType(charge.getEventType())){
-            throw new InvalidEventTypeException("Event type is wrong");
-        }
+        try {
+            // Me fijo si hay una factura de ese mes si no la creo.
+            Invoice invoice = createOrUpdateInvoice(charge);
 
-        // Arreglar bug de que si agrego un charge con un event_id que ya existe me la suma a la factura.
-        // Me fijo si hay una factura de ese mes si no la creo.
-        Invoice invoice = createOrUpdateInvoice(charge);
+            // Inicializo los valores.
+            charge.setDebt(charge.getAmount());
+            charge.setPaid_out(0);
+            charge.setInvoiceId(invoice.getId());
+            chargeRepository.save(charge);
 
-        // Inicializo los valores.
-        charge.setDebt(charge.getAmount());
-        charge.setPaid_out(0);
-        charge.setInvoiceId(invoice.getId());
-        chargeRepository.save(charge);
+        }catch (Exception e){
+            log.info(e.getMessage());
+        }
+            //if (chargeRepository.findByEventId(charge.getEventId()) != null){
+                // TODO
+            //    throw new InvalidAmountException("ASD");
+            //}
+            // Elimina toda la factura cuando tendria que eliminar el ultimo cargo
+            //invoiceService.deleteInvoiceById(invoice.getId());
+
+        //}
 
     }
 

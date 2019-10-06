@@ -1,8 +1,13 @@
 package com.example.project.controller;
 
+import com.example.project.exception.InvalidAmountException;
+import com.example.project.exception.InvalidCurrencyException;
+import com.example.project.exception.InvalidEventTypeException;
 import com.example.project.request.ChargeRequest;
 import com.example.project.service.ChargeService;
+import com.example.project.util.UtilValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.example.project.model.Charge;
 
@@ -37,7 +42,10 @@ public class ChargeController {
     }
 
     @PostMapping("/charges")
-    public void insertCharge(@Valid @RequestBody ChargeRequest chargeRequest){ //Charge eventRequestBody){
+    public void insertCharge(@Validated @RequestBody ChargeRequest chargeRequest){ //Charge eventRequestBody){
+
+        validateChargeFields(chargeRequest);
+
         Charge charge = buildCharge(chargeRequest);
         chargeService.saveCharge(charge);
     }
@@ -45,9 +53,6 @@ public class ChargeController {
     private Charge buildCharge(ChargeRequest chargeRequest){
         Charge charge = new Charge();
 
-        charge.setDebt(chargeRequest.getDebt());
-        charge.setPaid_out(chargeRequest.getPaid_out());
-        charge.setInvoiceId(chargeRequest.getInvoiceId());
         charge.setEventType(chargeRequest.getEventType());
         charge.setEventId(chargeRequest.getEventId());
         charge.setCurrency(chargeRequest.getCurrency());
@@ -56,6 +61,19 @@ public class ChargeController {
         charge.setDate(chargeRequest.getDate());
 
         return charge;
+    }
+
+    private void validateChargeFields(ChargeRequest chargeRequest){
+        if (UtilValidator.validateCurrency(chargeRequest.getCurrency())) {
+            throw new InvalidCurrencyException("Currency should be AR or USD.");
+        }
+        if (chargeRequest.getAmount() < 0) {
+            throw new InvalidAmountException("Amount should be greater than zero.");
+        }
+        if (UtilValidator.validateEventType(chargeRequest.getEventType())){
+            // Excepcion de event id iguales
+            throw new InvalidEventTypeException("Event type is wrong");
+        }
     }
 
 }

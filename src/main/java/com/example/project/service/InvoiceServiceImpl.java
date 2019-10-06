@@ -56,4 +56,9 @@ public class InvoiceServiceImpl implements InvoiceService{
         return invoiceRepository.save(invoice);
     }
 
+    @Override
+    public void deleteInvoiceById(Long id){
+        invoiceRepository.deleteById(id);
+    }
+
 }

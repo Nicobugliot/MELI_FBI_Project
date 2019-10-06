@@ -16,7 +16,7 @@ public interface ChargeService {
 
     List<Charge> findChargesByUserIdNotPaid(Long id);
 
-    void saveCharge(Charge charge);
+    public void saveCharge(Charge charge);
 
     void updateAllCharges(List<Charge> charge);
 

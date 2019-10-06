@@ -40,7 +40,13 @@ public class Charge {
     @Column(name = "invoice_id")
     private Long invoiceId;
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Double getDebt() {
         return debt;

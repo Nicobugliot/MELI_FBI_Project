@@ -3,23 +3,19 @@ package com.example.project.request;
 import java.util.Date;
 
 public class ChargeRequest {
-    private Long id;
     private Long eventId;
     private Double amount;
     private String currency;
     private Date date;
-    private Double debt;
     private String eventType;
-    private Integer paid_out;
     private Long userId;
-    private Long invoiceId;
 
-    public Long getId() {
-        return id;
+    public Long getEventId() {
+        return eventId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
     }
 
     public Double getAmount() {
@@ -46,23 +42,6 @@ public class ChargeRequest {
         this.date = date;
     }
 
-    public Double getDebt() {
-        return debt;
-    }
-
-    public void setDebt(Double debt) {
-        this.debt = debt;
-    }
-
-
-    public Integer getPaid_out() {
-        return paid_out;
-    }
-
-    public void setPaid_out(Integer paid_out) {
-        this.paid_out = paid_out;
-    }
-
     public String getEventType() {
         return eventType;
     }
@@ -71,27 +50,11 @@ public class ChargeRequest {
         this.eventType = eventType;
     }
 
-    public Long getEventId() {
-        return eventId;
-    }
-
-    public void setEventId(Long eventId) {
-        this.eventId = eventId;
-    }
-
     public Long getUserId() {
         return userId;
     }
 
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
-
-    public Long getInvoiceId() {
-        return invoiceId;
-    }
-
-    public void setInvoiceId(Long invoiceId) {
-        this.invoiceId = invoiceId;
     }
 }
