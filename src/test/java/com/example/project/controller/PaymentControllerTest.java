@@ -3,6 +3,7 @@ package com.example.project.controller;
 
 import com.example.project.ProjectApplication;
 import com.example.project.exception.InvalidAmountException;
+import com.example.project.exception.InvalidCurrencyException;
 import com.example.project.request.PaymentRequest;
 import com.example.project.service.PaymentService;
 import org.assertj.core.api.Assertions;
@@ -38,6 +39,19 @@ public class PaymentControllerTest {
         Assertions.assertThatThrownBy(() -> {
             paymentController.create(paymentRequest);
         }).isInstanceOf(InvalidAmountException.class).hasMessage("Amount should be greater than zero.");
+    }
+
+    @Test
+    public void testAddPaymentWithCurrencyExceptionController() {
+
+        PaymentRequest paymentRequest = new PaymentRequest();
+
+        paymentRequest.setAmount(10.0);
+        paymentRequest.setCurrency("EU");
+
+        Assertions.assertThatThrownBy(() -> {
+            paymentController.create(paymentRequest);
+        }).isInstanceOf(InvalidCurrencyException.class).hasMessage("Currency should be AR or USD.");
     }
 
     @Test

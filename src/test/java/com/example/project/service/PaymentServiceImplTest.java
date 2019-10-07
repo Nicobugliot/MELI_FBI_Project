@@ -96,7 +96,7 @@ public class PaymentServiceImplTest {
 
         Assertions.assertThatThrownBy(() -> {
             paymentServiceImpl.savePayment(paymentRequest);
-        }).isInstanceOf(InvalidAmountException.class).hasMessage("Estas intentando pagar más de lo que te corresponde");
+        }).isInstanceOf(InvalidAmountException.class).hasMessage("The amount exceeds the total amount to be paid");
 
     }
 
@@ -134,7 +134,7 @@ public class PaymentServiceImplTest {
 
         Assertions.assertThatThrownBy(() -> {
             paymentServiceImpl.savePayment(paymentRequest);
-        }).isInstanceOf(InvalidEventTypeException.class).hasMessage("No existen cargos para este usuario");
+        }).isInstanceOf(InvalidEventTypeException.class).hasMessage("There is no charges associated to the user");
 
     }
 
