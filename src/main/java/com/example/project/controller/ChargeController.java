@@ -5,13 +5,13 @@ import com.example.project.exception.InvalidCurrencyException;
 import com.example.project.exception.InvalidEventTypeException;
 import com.example.project.request.ChargeRequest;
 import com.example.project.service.ChargeService;
+import com.example.project.util.UtilConverter;
 import com.example.project.util.UtilValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.example.project.model.Charge;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -53,10 +53,12 @@ public class ChargeController {
     private Charge buildCharge(ChargeRequest chargeRequest){
         Charge charge = new Charge();
 
+        Double finalAmount = UtilConverter.currencyConverter(chargeRequest.getAmount(), chargeRequest.getCurrency());
+
         charge.setEventType(chargeRequest.getEventType());
         charge.setEventId(chargeRequest.getEventId());
         charge.setCurrency(chargeRequest.getCurrency());
-        charge.setAmount(chargeRequest.getAmount());
+        charge.setAmount(finalAmount);
         charge.setUserId(chargeRequest.getUserId());
         charge.setDate(chargeRequest.getDate());
 

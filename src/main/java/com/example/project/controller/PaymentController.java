@@ -1,9 +1,12 @@
 package com.example.project.controller;
 
 
+import com.example.project.exception.InvalidAmountException;
+import com.example.project.exception.InvalidCurrencyException;
 import com.example.project.model.Payment;
 import com.example.project.request.PaymentRequest;
 import com.example.project.service.PaymentService;
+import com.example.project.util.UtilConverter;
 import com.example.project.util.UtilValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,15 +35,12 @@ public class PaymentController {
     @PostMapping("/payments")
     public void create(@RequestBody PaymentRequest paymentRequest){
 
-        // Chequeo que los campos sean válidos.
-        try{
-            validateRequest(paymentRequest);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        validateRequest(paymentRequest);
+
+        Double finalAmount = UtilConverter.currencyConverter(paymentRequest.getAmount(), paymentRequest.getCurrency());
 
         paymentService.savePayment(paymentRequest.getUserId(),
-                                   paymentRequest.getAmount(),
+                                   finalAmount,
                                    Calendar.getInstance().get(Calendar.MONTH),
                                    Calendar.getInstance().get(Calendar.YEAR),
                                    paymentRequest.getCurrency());
@@ -48,9 +48,13 @@ public class PaymentController {
 
     }
 
-    private void validateRequest(PaymentRequest paymentRequest) throws Exception {
-        if (UtilValidator.validateCurrency(paymentRequest.getCurrency())) throw new Exception("INVALID CURRENCY");
-        if (paymentRequest.getAmount() < 0) throw new Exception("INVALID AMOUNT");
+    private void validateRequest(PaymentRequest paymentRequest){
+        if (UtilValidator.validateCurrency(paymentRequest.getCurrency())){
+            throw new InvalidCurrencyException("Currency should be AR or USD.");
+        }
+        if (paymentRequest.getAmount() < 0){
+            throw new InvalidAmountException("Amount should be greater than zero.");
+        }
     }
 
 }

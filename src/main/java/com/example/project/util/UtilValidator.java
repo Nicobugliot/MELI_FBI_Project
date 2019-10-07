@@ -24,7 +24,4 @@ public class UtilValidator {
         return !eventTypes.contains(eventType);
     }
 
-    public static Boolean validatePayment(Double totalCharges, Double totalPayment, Payment payment){
-        return (totalCharges - (totalPayment + payment.getAmount()) < 0);
-    }
 }
