@@ -3,10 +3,7 @@ package com.example.project.controller;
 
 import com.example.project.ProjectApplication;
 import com.example.project.exception.InvalidAmountException;
-import com.example.project.model.Payment;
-import com.example.project.request.ChargeRequest;
 import com.example.project.request.PaymentRequest;
-import com.example.project.service.ChargeService;
 import com.example.project.service.PaymentService;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -53,7 +50,7 @@ public class PaymentControllerTest {
 
         paymentController.create(paymentRequest);
 
-        verify(paymentService, times(1)).savePayment(any(), any(), any(), any(), any());
+        verify(paymentService, times(1)).savePayment(any());
     }
 }
 

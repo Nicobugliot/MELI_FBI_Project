@@ -8,6 +8,8 @@ import com.example.project.service.ChargeService;
 import com.example.project.util.UtilConverter;
 import com.example.project.util.UtilValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.example.project.model.Charge;
@@ -31,7 +33,7 @@ public class ChargeController {
         return chargeService.findChargesByUserId(user_id);
     }
 
-    @GetMapping("/bills/")
+    @GetMapping("/charges/")
     public List<Charge> listChargesByIdMonthAndYear(@RequestParam Long user_id, @RequestParam Integer month, @RequestParam Integer year){
         return chargeService.findChargesByUserIdMonthAndYear(user_id, month, year);
     }
@@ -42,12 +44,13 @@ public class ChargeController {
     }
 
     @PostMapping("/charges")
-    public void insertCharge(@Validated @RequestBody ChargeRequest chargeRequest){ //Charge eventRequestBody){
+    public ResponseEntity<String> insertCharge(@Validated @RequestBody ChargeRequest chargeRequest){ //Charge eventRequestBody){
 
         validateChargeFields(chargeRequest);
 
         Charge charge = buildCharge(chargeRequest);
         chargeService.saveCharge(charge);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     private Charge buildCharge(ChargeRequest chargeRequest){

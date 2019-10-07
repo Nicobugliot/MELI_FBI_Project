@@ -1,6 +1,7 @@
 package com.example.project.service;
 
 import com.example.project.model.Payment;
+import com.example.project.request.PaymentRequest;
 
 import java.util.List;
 
@@ -12,5 +13,5 @@ public interface PaymentService {
 
     List<Payment> findPaymentByUserMonthAndYear(Long id, Integer month, Integer year);
 
-    void savePayment(Long user_id, Double amount, Integer month, Integer year, String currency);
+    void savePayment(PaymentRequest paymentRequest);
 }

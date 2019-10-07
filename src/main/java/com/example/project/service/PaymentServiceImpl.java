@@ -5,9 +5,11 @@ import com.example.project.exception.InvalidEventTypeException;
 import com.example.project.model.Invoice;
 import com.example.project.model.Payment;
 import com.example.project.repository.PaymentRepository;
+import com.example.project.request.PaymentRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.List;
 
 @Service
@@ -44,8 +46,13 @@ public class PaymentServiceImpl implements PaymentService{
     }
 
     @Override
-    //TODO cambiar el input
-    public void savePayment(Long user_id, Double amount, Integer month, Integer year, String currency){
+    public void savePayment(PaymentRequest paymentRequest){
+
+        Integer month = Calendar.getInstance().get(Calendar.MONTH);
+        Integer year = Calendar.getInstance().get(Calendar.YEAR);
+        Long user_id = paymentRequest.getUserId();
+        Double amount = paymentRequest.getAmount();
+        String currency = paymentRequest.getCurrency();
 
         Invoice invoice = invoiceService.getUserInvoiceByMonthAndYear(user_id, month + 1, year);
 

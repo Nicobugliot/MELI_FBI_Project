@@ -7,6 +7,7 @@ import com.example.project.exception.InvalidEventTypeException;
 import com.example.project.model.Invoice;
 import com.example.project.model.Payment;
 import com.example.project.repository.PaymentRepository;
+import com.example.project.request.PaymentRequest;
 import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.Test;
@@ -82,11 +83,11 @@ public class PaymentServiceImplTest {
     @Test
     public void testPaymentAmount(){
 
-        Long user_id = 11L;
-        Double amount = 100.0;
-        Integer month = 4;
-        Integer year = 2019;
-        String currency = "AR";
+        PaymentRequest paymentRequest = new PaymentRequest();
+
+        paymentRequest.setUserId(11L);
+        paymentRequest.setAmount(100.0);
+        paymentRequest.setCurrency("AR");
 
         Invoice invoice = new Invoice();
         invoice.setDebt(99.0);
@@ -94,7 +95,7 @@ public class PaymentServiceImplTest {
         when(invoiceService.getUserInvoiceByMonthAndYear(any(), any(), any())).thenReturn(invoice);
 
         Assertions.assertThatThrownBy(() -> {
-            paymentServiceImpl.savePayment(user_id, amount, month, year, currency);
+            paymentServiceImpl.savePayment(paymentRequest);
         }).isInstanceOf(InvalidAmountException.class).hasMessage("Estas intentando pagar más de lo que te corresponde");
 
     }
@@ -102,18 +103,18 @@ public class PaymentServiceImplTest {
     @Test
     public void testPaymentAmountLessThanInvoiceDebt(){
 
-        Long user_id = 11L;
-        Double amount = 100.0;
-        Integer month = 4;
-        Integer year = 2019;
-        String currency = "AR";
+        PaymentRequest paymentRequest = new PaymentRequest();
+
+        paymentRequest.setUserId(11L);
+        paymentRequest.setAmount(100.0);
+        paymentRequest.setCurrency("AR");
 
         Invoice invoice = new Invoice();
         invoice.setDebt(200.0);
 
         when(invoiceService.getUserInvoiceByMonthAndYear(any(), any(), any())).thenReturn(invoice);
 
-        paymentServiceImpl.savePayment(user_id, amount, month, year, currency);
+        paymentServiceImpl.savePayment(paymentRequest);
 
         verify(paymentRepository, times(1)).save(any());
         verify(invoiceService, times(1)).addPaymentToInvoice(any(), any());
@@ -123,16 +124,16 @@ public class PaymentServiceImplTest {
     @Test
     public void testPaymentWithNotInvoice(){
 
-        Long user_id = 11L;
-        Double amount = 100.0;
-        Integer month = 4;
-        Integer year = 2019;
-        String currency = "AR";
+        PaymentRequest paymentRequest = new PaymentRequest();
+
+        paymentRequest.setUserId(11L);
+        paymentRequest.setAmount(100.0);
+        paymentRequest.setCurrency("AR");
 
         when(invoiceService.getUserInvoiceByMonthAndYear(any(), any(), any())).thenReturn(null);
 
         Assertions.assertThatThrownBy(() -> {
-            paymentServiceImpl.savePayment(user_id, amount, month, year, currency);
+            paymentServiceImpl.savePayment(paymentRequest);
         }).isInstanceOf(InvalidEventTypeException.class).hasMessage("No existen cargos para este usuario");
 
     }

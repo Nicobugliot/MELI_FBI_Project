@@ -9,6 +9,8 @@ import com.example.project.service.PaymentService;
 import com.example.project.util.UtilConverter;
 import com.example.project.util.UtilValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Calendar;
@@ -31,21 +33,21 @@ public class PaymentController {
         return paymentService.findPaymentByUserId(user_id);
     }
 
+    @GetMapping("/payments/")
+    public List<Payment> listPaymentsByIdMonthAndYear(@RequestParam Long user_id, @RequestParam Integer month, @RequestParam Integer year){
+        return paymentService.findPaymentByUserMonthAndYear(user_id, month, year);
+    }
 
     @PostMapping("/payments")
-    public void create(@RequestBody PaymentRequest paymentRequest){
+    public ResponseEntity<String> create(@RequestBody PaymentRequest paymentRequest){
 
         validateRequest(paymentRequest);
 
         Double finalAmount = UtilConverter.currencyConverter(paymentRequest.getAmount(), paymentRequest.getCurrency());
 
-        paymentService.savePayment(paymentRequest.getUserId(),
-                                   finalAmount,
-                                   Calendar.getInstance().get(Calendar.MONTH),
-                                   Calendar.getInstance().get(Calendar.YEAR),
-                                   paymentRequest.getCurrency());
+        paymentService.savePayment(paymentRequest);
 
-
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     private void validateRequest(PaymentRequest paymentRequest){

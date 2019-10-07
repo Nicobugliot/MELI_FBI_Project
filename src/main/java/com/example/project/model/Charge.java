@@ -11,9 +11,10 @@ public class Charge {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
-    @Column(name = "event_id", nullable = false, unique = true)
+    @Column(name = "event_id", nullable = false)
     private Long eventId;
 
     @Column(name = "user_id", nullable = false)
