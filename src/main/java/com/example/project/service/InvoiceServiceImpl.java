@@ -27,6 +27,11 @@ public class InvoiceServiceImpl implements InvoiceService{
         return invoiceRepository.findAll();
     }
 
+    @Override
+    public List<Invoice> findInvoiceByUserId(Long user_id){
+        return invoiceRepository.findInvoiceByUserId(user_id);
+    }
+
 
     @Override
     public UserStatusResponse getUserStatus(Long user_id, Integer month, Integer year) {

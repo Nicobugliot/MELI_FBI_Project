@@ -16,6 +16,8 @@ public interface InvoiceService {
 
     List<Invoice> listInvoice();
 
+    List<Invoice> findInvoiceByUserId(Long user_id);
+
     UserStatusResponse getUserStatus(Long user_id, Integer month, Integer year);
 
 }

@@ -44,6 +44,7 @@ public class PaymentController {
         validateRequest(paymentRequest);
 
         Double finalAmount = UtilConverter.currencyConverter(paymentRequest.getAmount(), paymentRequest.getCurrency());
+        paymentRequest.setAmount(finalAmount);
 
         paymentService.savePayment(paymentRequest);
 
