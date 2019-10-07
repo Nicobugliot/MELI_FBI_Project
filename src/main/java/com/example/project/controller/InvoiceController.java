@@ -30,7 +30,6 @@ public class InvoiceController {
         return invoiceService.findInvoiceByUserId(user_id);
     }
 
-
     @GetMapping("/invoice")
     public List<Invoice> getInvoice() {
         return invoiceService.listInvoice();

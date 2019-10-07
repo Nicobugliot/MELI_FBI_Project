@@ -22,13 +22,7 @@ public class PaymentServiceImpl implements PaymentService{
     private PaymentRepository paymentRepository;
 
     @Autowired
-    private ChargeService chargeService;
-
-    @Autowired
     private InvoiceService invoiceService;
-
-    @Autowired
-    private AssociationTableService associationTableService;
 
     @Override
     public List<Payment> listPayment(){
@@ -57,10 +51,10 @@ public class PaymentServiceImpl implements PaymentService{
         Invoice invoice = invoiceService.getUserInvoiceByMonthAndYear(user_id, month + 1, year);
 
         if (invoice == null){
-            throw new InvalidEventTypeException("No existen cargos para este usuario");
+            throw new InvalidEventTypeException("There is no charges associated to the user");
         }
         if (validatePaymentAmount(amount, invoice)){
-            throw new InvalidAmountException("Estas intentando pagar más de lo que te corresponde");
+            throw new InvalidAmountException("The amount exceeds the total amount to be paid");
         }
 
         Payment payment = buildPayment(user_id, amount, currency);
@@ -77,6 +71,10 @@ public class PaymentServiceImpl implements PaymentService{
         return ((invoice.getDebt() - amount) < 0);
     }
 
+    /*
+    Utilizo una función asincrónica para poder devolver rápido un status 201 y mientras tanto hacer el proceso de guardado del pago.
+    Así puedo acortar tiempos de respuesta.
+     */
     private void associatePaymentAsync(Payment payment){
 
         new Thread(() -> {
