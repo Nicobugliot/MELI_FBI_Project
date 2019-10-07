@@ -45,7 +45,6 @@
 * 200 - OK
 * 201 - Created
 * 400 - Bad Request
-* 500 - Internal Server Error
 
 
 # GET Payments
@@ -86,7 +85,6 @@
 * 200 - OK
 * 201 - Created
 * 400 - Bad Request
-* 500 - Internal Server Error
 
 # GET Invoice
 
@@ -108,7 +106,6 @@
 ### Responses
 
 * 200 - OK
-* 500 - Internal Server Error
 
 # GET User status
 
@@ -126,4 +123,3 @@
 ### Responses
 
 * 200 - OK
-* 500 - Internal Server Error
