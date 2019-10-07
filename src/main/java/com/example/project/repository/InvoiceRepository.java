@@ -11,6 +11,4 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
     @Query(value = "SELECT * FROM demo.invoice WHERE user_id=?1 AND month=?2 AND year=?3", nativeQuery = true)
     Invoice userInvoiceByMonthAndYear(Long user_id, Integer month, Integer year);
 
-    void deleteInvoiceById(Long id);
-
 }

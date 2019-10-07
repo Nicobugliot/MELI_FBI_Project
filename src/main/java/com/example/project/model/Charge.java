@@ -40,6 +40,7 @@ public class Charge {
     @Column(name = "invoice_id")
     private Long invoiceId;
 
+
     public Long getId() {
         return id;
     }

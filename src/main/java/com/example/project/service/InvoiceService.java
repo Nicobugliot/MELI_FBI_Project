@@ -18,5 +18,4 @@ public interface InvoiceService {
 
     UserStatusResponse getUserStatus(Long user_id, Integer month, Integer year);
 
-    void deleteInvoiceById(Long id);
 }

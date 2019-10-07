@@ -1,12 +1,8 @@
 package com.example.project.service;
 
-import com.example.project.exception.InvalidAmountException;
-import com.example.project.exception.InvalidCurrencyException;
-import com.example.project.exception.InvalidEventTypeException;
 import com.example.project.model.Charge;
 import com.example.project.model.Invoice;
 import com.example.project.repository.ChargeRepository;
-import com.example.project.util.UtilValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,28 +51,12 @@ public class ChargeServiceImpl implements ChargeService {
     @Override
     @Transactional
     public void saveCharge(Charge charge){
-        try {
-            // Me fijo si hay una factura de ese mes si no la creo.
-            Invoice invoice = createOrUpdateInvoice(charge);
+        Invoice invoice = createOrUpdateInvoice(charge);
 
-            // Inicializo los valores.
-            charge.setDebt(charge.getAmount());
-            charge.setPaid_out(0);
-            charge.setInvoiceId(invoice.getId());
-            chargeRepository.save(charge);
-
-        }catch (Exception e){
-            log.info(e.getMessage());
-        }
-            //if (chargeRepository.findByEventId(charge.getEventId()) != null){
-                // TODO
-            //    throw new InvalidAmountException("ASD");
-            //}
-            // Elimina toda la factura cuando tendria que eliminar el ultimo cargo
-            //invoiceService.deleteInvoiceById(invoice.getId());
-
-        //}
-
+        charge.setDebt(charge.getAmount());
+        charge.setPaid_out(0);
+        charge.setInvoiceId(invoice.getId());
+        chargeRepository.save(charge);
     }
 
     @Override
@@ -88,7 +68,7 @@ public class ChargeServiceImpl implements ChargeService {
     // ----------- METODOS PRIVADOS -----------
 
 
-    private Invoice setNewUserInvoice(Charge charge, Integer month, Integer year){
+    private Invoice buildInvoice(Charge charge, Integer month, Integer year){
         Invoice invoice = new Invoice();
         invoice.setDebt(charge.getAmount());
         invoice.setUserId(charge.getUserId());
@@ -98,7 +78,6 @@ public class ChargeServiceImpl implements ChargeService {
         return invoice;
     }
 
-    // Me fijo que la factura exista, si no, la creo
     private Invoice createOrUpdateInvoice(Charge charge){
 
         Calendar cal = Calendar.getInstance();
@@ -109,13 +88,9 @@ public class ChargeServiceImpl implements ChargeService {
         try {
             Invoice userInvoice = invoiceService.getUserInvoiceByMonthAndYear(charge.getUserId(), month, year);
             userInvoice.setDebt( userInvoice.getDebt() + charge.getAmount() );
-
-            // Actualizo la fila
             return invoiceService.saveInvoice(userInvoice);
         }catch (NullPointerException e){
-
-            // Si no existe la factura entonces la creo
-            Invoice invoice = setNewUserInvoice(charge, month, year);
+            Invoice invoice = buildInvoice(charge, month, year);
             return invoiceService.saveInvoice(invoice);
         }
     }

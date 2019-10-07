@@ -30,13 +30,11 @@ public class AsociatePaymentService {
                 month,
                 year);
 
-        // Actualizo los cargos
         updateChargeAndAssociate(userCharges, payment);
 
     }
 
     private void updateChargeAndAssociate(List<Charge> userCharges, Payment payment){
-        // Acá le tendría que sumar al monto lo que tiene de sobra el usuario.
         Double amount = payment.getAmount();
         Long paymentId = payment.getId();
 
@@ -54,10 +52,6 @@ public class AsociatePaymentService {
                 break;
             }
         }
-
-        // Agrego plata a favor del usuario si el monto es mayor a 0.
-
-        // Le hago un update a todos los cargos afectados.
         chargeService.updateAllCharges(userCharges);
     }
 }

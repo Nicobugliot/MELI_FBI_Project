@@ -30,14 +30,11 @@ public class InvoiceServiceImpl implements InvoiceService{
 
     @Override
     public UserStatusResponse getUserStatus(Long user_id, Integer month, Integer year) {
-        System.out.println("ASD");
         List<Charge> userCharge = chargeService.findChargesByUserIdMonthAndYear(user_id, month, year);
         List<Payment> userPayment = paymentService.findPaymentByUserMonthAndYear(user_id, month, year);
         Invoice userInvoice = invoiceRepository.userInvoiceByMonthAndYear(user_id, month, year);
 
         return new UserStatusResponse(userCharge, userPayment, userInvoice.getDebt());
-
-        // Implementar el estado del usuario ( cargos, pagos y deuda )
     }
 
     @Override
@@ -54,11 +51,6 @@ public class InvoiceServiceImpl implements InvoiceService{
     @Override
     public Invoice saveInvoice(Invoice invoice){
         return invoiceRepository.save(invoice);
-    }
-
-    @Override
-    public void deleteInvoiceById(Long id){
-        invoiceRepository.deleteById(id);
     }
 
 }

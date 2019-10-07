@@ -1,5 +1,6 @@
 package com.example.project.service;
 
+import com.example.project.exception.InvalidAmountException;
 import com.example.project.exception.InvalidEventTypeException;
 import com.example.project.model.Invoice;
 import com.example.project.model.Payment;
@@ -43,6 +44,7 @@ public class PaymentServiceImpl implements PaymentService{
     }
 
     @Override
+    //TODO cambiar el input
     public void savePayment(Long user_id, Double amount, Integer month, Integer year, String currency){
 
         Invoice invoice = invoiceService.getUserInvoiceByMonthAndYear(user_id, month + 1, year);
@@ -50,23 +52,15 @@ public class PaymentServiceImpl implements PaymentService{
         if (invoice == null){
             throw new InvalidEventTypeException("No existen cargos para este usuario");
         }
-
         if (validatePaymentAmount(amount, invoice)){
-            throw new InvalidEventTypeException("Estas intentando pagar más de lo que te corresponde");
+            throw new InvalidAmountException("Estas intentando pagar más de lo que te corresponde");
         }
 
-        // Seteo el pago
         Payment payment = buildPayment(user_id, amount, currency);
 
-
-        // Guardo el pago
         Payment userPayment = paymentRepository.save(payment);
 
-        try{
-            invoiceService.addPaymentToInvoice(invoice, amount);
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
+        invoiceService.addPaymentToInvoice(invoice, amount);
 
         associatePaymentAsync(userPayment);
 

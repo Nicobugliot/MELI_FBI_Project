@@ -71,7 +71,6 @@ public class ChargeController {
             throw new InvalidAmountException("Amount should be greater than zero.");
         }
         if (UtilValidator.validateEventType(chargeRequest.getEventType())){
-            // Excepcion de event id iguales
             throw new InvalidEventTypeException("Event type is wrong");
         }
     }

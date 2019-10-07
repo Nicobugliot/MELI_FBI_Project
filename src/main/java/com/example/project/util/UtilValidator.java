@@ -7,19 +7,20 @@ import java.util.List;
 
 public class UtilValidator {
 
+    private static final List<String> currencies = Arrays.asList("USD", "AR");
+    private static final List<String> eventTypes = Arrays.asList("CLASIFICADO",
+            "VENTA",
+            "ENVIO",
+            "CREDITO",
+            "FIDELIDAD",
+            "PUBLICIDAD");
+
+
     public static Boolean validateCurrency(String currency){
-        List<String> currencies = Arrays.asList("USD", "AR");
         return !currencies.contains(currency);
     }
 
     public static Boolean validateEventType(String eventType){
-        List<String> eventTypes = Arrays.asList("CLASIFICADO",
-                "VENTA",
-                "ENVIO",
-                "CREDITO",
-                "FIDELIDAD",
-                "PUBLICIDAD");
-
         return !eventTypes.contains(eventType);
     }
 
