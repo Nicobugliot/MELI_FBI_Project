@@ -9,8 +9,17 @@
 |:----------------------------|:----------------------------------|
 | `/api/charges`      | Devuelve una lista con todos los cargos de todos los usuarios |
 | `/api/charges/{user_id}`| Devuelve una lista con todos los cargos de un usuario |
-| `/api/charges/` | Devuelve una lista con todos los cargos de un usuario especificando el mes y el año |
 | `/api/debt/{user_id}` | Devuelve una lista con todos los cargos no pagos de un usuarios |
+
+| GET                     | Description                       |
+|:----------------------------|:----------------------------------
+| `/api/charges/`| Devuelve una lista con los cargos de un usuario especificando mes y año |
+
+### Parameters
+
+* user_id* long int
+* month* int
+* year* int
 
 
 # POST Charges
@@ -45,7 +54,16 @@
 |:----------------------------|:----------------------------------|
 | `/api/payments`      | Devuelve una lista con todos los pagos de todos los usuarios |
 | `/api/payments/{user_id}`| Devuelve una lista con todos los pagos de un usuario |
-| `/api/payments/` | Devuelve una lista con todos los pagos de un usuario especificando el mes y el año |
+
+| GET                     | Description                       |
+|:----------------------------|:----------------------------------
+| `/api/payments/`| Devuelve una lista con los pagos de un usuario especificando mes y año |
+
+### Parameters
+
+* user_id* long int
+* month* int
+* year* int
 
 
 # POST Payments
@@ -75,13 +93,21 @@
 | GET                     | Description                       |
 |:----------------------------|:----------------------------------|
 | `/api/invoice`      | Devuelve una lista con todas las facturas de todos los usuarios |
-| `/api/invoice/`| Devuelve la factura de un usuario especificando mes y año |
 | `/api/invoice/{user_id}`| Devuelve todas las facturas de un usuario |
+
+| GET                     | Description                       |
+|:----------------------------|:----------------------------------
+| `/api/invoice/`| Devuelve la factura de un usuario especificando mes y año |
+
+### Parameters
+
+* user_id* long int
+* month* int
+* year* int
 
 ### Responses
 
 * 200 - OK
-* 400 - Bad Request
 * 500 - Internal Server Error
 
 # GET User status
@@ -91,8 +117,13 @@
 |:----------------------------|:----------------------------------|
 | `/api/status/`      | Devuelve el estado de un usuario dependiendo el mes y el año |
 
+### Parameters
+
+* user_id* long int
+* month* int
+* year* int
+
 ### Responses
 
 * 200 - OK
-* 400 - Bad Request
 * 500 - Internal Server Error
