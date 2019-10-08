@@ -447,11 +447,11 @@
 1. Los cargos y los pagos se almacenan con la moneda en la cual se ingresó ( USD o AR ) pero dentro del servidor se maneja únicamente la moneda AR, esto se puede ver por ejemplo en el campo "debt" de los cargos.
 2. Las facturas se dividieron por id, mes y año con su respectiva deuda en el caso de tenerla.
 3. El status del usuario se prefirió hacerlo por mes también y contiene todos los cargos y pagos que haya realizado.
-4. La tabla de asociación no se utiliza dentro del servicio pero se puede usar para fijarse qué pago está asociado a qué cargo y es por eso que se disponibiliza una url para obtenerla.
 
 # Consideraciones
 
 1. Se consideró realizar la respuesta lo más rápido posible, es por eso la función asincrónica dentro de los cargos, la idea tras eso fue que, una vez que sepamos que el cargo estaba apto para ser guardado, devolver un status correcto y luego proceder a guardar el cargo en la base de datos.
+2. La tabla de asociación no se utiliza dentro del servicio pero se puede usar para fijarse qué pago está asociado a qué cargo y es por eso que se disponibiliza una url para obtenerla.
 
 # Proximos pasos para mejorar
 1. Faltan agregar un par de excepciones (en proceso por falta de tiempo) que deberían de verificar que para los GET request, si no existe el usuario dentro de la base de datos devuelva 404 en vez de una lista vacía.
