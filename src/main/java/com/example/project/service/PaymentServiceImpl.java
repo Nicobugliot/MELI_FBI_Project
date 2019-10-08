@@ -6,6 +6,7 @@ import com.example.project.model.Invoice;
 import com.example.project.model.Payment;
 import com.example.project.repository.PaymentRepository;
 import com.example.project.request.PaymentRequest;
+import com.example.project.util.UtilConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,7 +62,7 @@ public class PaymentServiceImpl implements PaymentService{
 
         Payment userPayment = paymentRepository.save(payment);
 
-        invoiceService.addPaymentToInvoice(invoice, amount);
+        invoiceService.addPaymentToInvoice(invoice, UtilConverter.currencyConverter(amount, currency));
 
         associatePaymentAsync(userPayment);
 
@@ -71,9 +72,9 @@ public class PaymentServiceImpl implements PaymentService{
         return ((invoice.getDebt() - amount) < 0);
     }
 
-    /*
-    Utilizo una función asincrónica para poder devolver rápido un status 201 y mientras tanto hacer el proceso de guardado del pago.
-    Así puedo acortar tiempos de respuesta.
+    /**
+     * Utilizo una función asincrónica para poder devolver rápido un status 201 y mientras tanto
+     * hacer el proceso de guardado del pago, así puedo acortar tiempos de respuesta.
      */
     private void associatePaymentAsync(Payment payment){
 

@@ -5,7 +5,6 @@ import com.example.project.exception.InvalidCurrencyException;
 import com.example.project.exception.InvalidEventTypeException;
 import com.example.project.request.ChargeRequest;
 import com.example.project.service.ChargeService;
-import com.example.project.util.UtilConverter;
 import com.example.project.util.UtilValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +27,7 @@ public class ChargeController {
         return chargeService.listCharges();
     }
 
-    @GetMapping("/charges/{user_id}")
+    @GetMapping("/user/{user_id}/charges")
     public List<Charge> listChargesById(@PathVariable Long user_id){
         return chargeService.findChargesByUserId(user_id);
     }
@@ -38,13 +37,13 @@ public class ChargeController {
         return chargeService.findChargesByUserIdMonthAndYear(user_id, month, year);
     }
 
-    @GetMapping("/debt/{user_id}")
+    @GetMapping("/user/{user_id}/debt")
     public List<Charge> listChargeNotPaidByUser(@PathVariable Long user_id){
         return chargeService.findChargesByUserIdNotPaid(user_id);
     }
 
     @PostMapping("/charges")
-    public ResponseEntity<String> insertCharge(@Validated @RequestBody ChargeRequest chargeRequest){ //Charge eventRequestBody){
+    public ResponseEntity<String> insertCharge(@Validated @RequestBody ChargeRequest chargeRequest){
 
         validateChargeFields(chargeRequest);
 
@@ -56,12 +55,10 @@ public class ChargeController {
     private Charge buildCharge(ChargeRequest chargeRequest){
         Charge charge = new Charge();
 
-        Double finalAmount = UtilConverter.currencyConverter(chargeRequest.getAmount(), chargeRequest.getCurrency());
-
         charge.setEventType(chargeRequest.getEventType());
         charge.setEventId(chargeRequest.getEventId());
         charge.setCurrency(chargeRequest.getCurrency());
-        charge.setAmount(finalAmount);
+        charge.setAmount(chargeRequest.getAmount());
         charge.setUserId(chargeRequest.getUserId());
         charge.setDate(chargeRequest.getDate());
 

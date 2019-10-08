@@ -3,6 +3,7 @@ package com.example.project.service;
 import com.example.project.model.Charge;
 import com.example.project.model.Invoice;
 import com.example.project.repository.ChargeRepository;
+import com.example.project.util.UtilConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,7 +54,7 @@ public class ChargeServiceImpl implements ChargeService {
     public void saveCharge(Charge charge){
         Invoice invoice = createOrUpdateInvoice(charge);
 
-        charge.setDebt(charge.getAmount());
+        charge.setDebt(UtilConverter.currencyConverter(charge.getAmount(), charge.getCurrency()));
         charge.setPaid_out(0);
         charge.setInvoiceId(invoice.getId());
         chargeRepository.save(charge);
@@ -67,17 +68,6 @@ public class ChargeServiceImpl implements ChargeService {
 
     // ----------- METODOS PRIVADOS -----------
 
-
-    private Invoice buildInvoice(Charge charge, Integer month, Integer year){
-        Invoice invoice = new Invoice();
-        invoice.setDebt(charge.getAmount());
-        invoice.setUserId(charge.getUserId());
-        invoice.setMonth(month);
-        invoice.setYear(year);
-
-        return invoice;
-    }
-
     private Invoice createOrUpdateInvoice(Charge charge){
 
         Calendar cal = Calendar.getInstance();
@@ -85,14 +75,26 @@ public class ChargeServiceImpl implements ChargeService {
         int month = cal.get(Calendar.MONTH) + 1;
         int year = cal.get(Calendar.YEAR);
 
+        Double amount = UtilConverter.currencyConverter(charge.getAmount(), charge.getCurrency());
+
         try {
             Invoice userInvoice = invoiceService.getUserInvoiceByMonthAndYear(charge.getUserId(), month, year);
-            userInvoice.setDebt( userInvoice.getDebt() + charge.getAmount() );
+            userInvoice.setDebt( userInvoice.getDebt() + amount );
             return invoiceService.saveInvoice(userInvoice);
         }catch (NullPointerException e){
-            Invoice invoice = buildInvoice(charge, month, year);
+            Invoice invoice = buildInvoice(charge.getUserId(), amount, month, year);
             return invoiceService.saveInvoice(invoice);
         }
+    }
+
+    private Invoice buildInvoice(Long user_id, Double amount, Integer month, Integer year){
+        Invoice invoice = new Invoice();
+        invoice.setDebt(amount);
+        invoice.setUserId(user_id);
+        invoice.setMonth(month);
+        invoice.setYear(year);
+
+        return invoice;
     }
 
 }

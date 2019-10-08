@@ -7,6 +7,8 @@ import com.example.project.repository.AssociationTableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AssociationTableServiceImpl implements AssociationTableService{
 
@@ -20,6 +22,11 @@ public class AssociationTableServiceImpl implements AssociationTableService{
         associationTable.setPaymentId(paymentId); //payment.getId());
 
         associationTableRepository.save(associationTable);
+    }
+
+    @Override
+    public List<AssociationTable> getAssociationTable(){
+        return associationTableRepository.findAll();
     }
 
 }

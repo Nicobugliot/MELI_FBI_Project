@@ -25,7 +25,7 @@ public class InvoiceController {
         return invoiceService.getUserStatus(user_id, month, year);
     }
 
-    @GetMapping("/invoice/{user_id}")
+    @GetMapping("/user/{user_id}/invoice/")
     public List<Invoice> listInvoiceById(@PathVariable Long user_id){
         return invoiceService.findInvoiceByUserId(user_id);
     }

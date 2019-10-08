@@ -4,11 +4,8 @@ import com.example.project.ProjectApplication;
 import com.example.project.exception.InvalidAmountException;
 import com.example.project.exception.InvalidCurrencyException;
 import com.example.project.exception.InvalidEventTypeException;
-import com.example.project.model.Charge;
-import com.example.project.repository.InvoiceRepository;
 import com.example.project.request.ChargeRequest;
 import com.example.project.service.ChargeService;
-import com.example.project.service.InvoiceServiceImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,8 +14,6 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.Date;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;

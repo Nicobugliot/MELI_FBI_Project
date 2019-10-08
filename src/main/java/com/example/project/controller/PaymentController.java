@@ -28,7 +28,7 @@ public class PaymentController {
         return paymentService.listPayment();
     }
 
-    @GetMapping("/payments/{user_id}")
+    @GetMapping("user/{user_id}/payments")
     public List<Payment> listPaymentId(@PathVariable Long user_id){
         return paymentService.findPaymentByUserId(user_id);
     }
@@ -40,14 +40,8 @@ public class PaymentController {
 
     @PostMapping("/payments")
     public ResponseEntity<String> create(@RequestBody PaymentRequest paymentRequest){
-
         validateRequest(paymentRequest);
-
-        Double finalAmount = UtilConverter.currencyConverter(paymentRequest.getAmount(), paymentRequest.getCurrency());
-        paymentRequest.setAmount(finalAmount);
-
         paymentService.savePayment(paymentRequest);
-
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
