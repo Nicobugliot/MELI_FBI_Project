@@ -456,3 +456,4 @@
 # Proximos pasos para mejorar
 1. Faltan agregar un par de excepciones (en proceso por falta de tiempo) que deberían de verificar que para los GET request, si no existe el usuario dentro de la base de datos devuelva 404 en vez de una lista vacía.
 2. Agregar lo del monto a favor del cliente en caso de que se pague más de lo que se debía.
+3. Se debería de recuperar el precio actual del dolar desde la API que provee el Banco Central para poder realizar la conversión. Ahora mismo está harcodeado el valor
